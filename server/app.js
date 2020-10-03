@@ -8,6 +8,9 @@ const { API_VERSION } = require("./config");
 
 const userRoutes = require("./routers/user")
 
+const UserController = require("./controllers/user")
+
+
 
 //
 
@@ -18,9 +21,8 @@ app.use(bodyParser.json());
 
 app.use(`/api/${API_VERSION}`, userRoutes)
 
-
-// app.get("/", (req, res) => {
-//     res.send("LOLL")
-// })
+app.get("/", (req, res) => {
+    res.send("LOLL")
+})
 
 module.exports = app;

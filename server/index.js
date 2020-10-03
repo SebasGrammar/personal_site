@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const app = require("./app")
-const SERVER_PORT = process.env.PORT || 3000
+// const SERVER_PORT = process.env.PORT || 3050
+const SERVER_PORT = 4000
 const { API_VERSION, SERVER_IP, DB_PORT } = require("./config")
 
 mongoose.set("useFindAndModify", false)
