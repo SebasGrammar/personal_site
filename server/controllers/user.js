@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt-nodejs")
-const jwt = require("jwt-simple")
+const jwt = require("../services/jwt")
 const User = require("../models/user")
 
 // function createUser(object, user) {
@@ -26,7 +26,7 @@ function signUp(req, res) {
 
     // user.name = name
     user.lastName = lastName
-    user.email = email
+    user.email = email.toLowerCase()
     user.role = "admin"
     user.active = false
 
@@ -81,6 +81,44 @@ function signUp(req, res) {
     // })
 }
 
+function signIn(req, res) {
+    const params = req.body
+    
+    const email = params.email.toLowerCase()
+    const password = params.password
+
+    User.findOne({email}, (error, storedUser) => {
+        if (error) {
+            res.status(500).send({message: `Server error: ${error}`})
+        }
+
+        if (!storedUser) {
+            res.status(404).send({message: `User has not been found`})
+        } else {
+            console.log(storedUser)
+            console.log(password)
+            bcrypt.compare(password, storedUser.password, (error, check) => {
+                if (error) {
+                    res.status(500).send({message: `Server error: ${error}`})
+                } else if (!check) {
+                    res.status(404).send({message: `The password in incorrect`})
+                }
+                
+                else if (!storedUser.active) {
+                    res.status(200).send({message: `This user is not active`})
+                } else {
+                    res.status(200).send({
+                        accessToken: jwt.createAccessToken(storedUser),
+                        refreshToken: jwt.createRefreshToken(storedUser)
+                    })
+                }
+
+            })
+        }
+    })
+}
+
 module.exports = {
-    signUp
+    signUp,
+    signIn
 }
