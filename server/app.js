@@ -6,6 +6,8 @@ const { API_VERSION } = require("./config");
 
 // Load routes
 
+const authRoutes = require("./routers/auth")
+
 const userRoutes = require("./routers/user")
 
 const UserController = require("./controllers/user")
@@ -19,6 +21,7 @@ app.use(bodyParser.json());
 
 // Router
 
+app.use(`/api/${API_VERSION}`, authRoutes)
 app.use(`/api/${API_VERSION}`, userRoutes)
 
 app.get("/", (req, res) => {

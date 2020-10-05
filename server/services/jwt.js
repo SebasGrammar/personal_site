@@ -29,13 +29,13 @@ function createRefreshToken(user) {
     return jwt.encode(payload, SECRET_KEY)
 }
 
-function decodeToken(token) {
+function decodedToken(token) {
     return jwt.decode(token, SECRET_KEY, true)
 }
 
 module.exports = {
     createAccessToken,
     createRefreshToken,
-    decodeToken
+    decodedToken
 
 }
