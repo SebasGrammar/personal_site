@@ -25,6 +25,8 @@ function signUp(req, res) {
     // createUser(req.body, user)
 
     // user.name = name
+
+    // This goes to the database!
     user.lastName = lastName
     user.email = email.toLowerCase()
     user.role = "admin"
@@ -118,7 +120,35 @@ function signIn(req, res) {
     })
 }
 
+function getUsers(req, res) {
+    User.find().then(users => {
+        if (!users) {
+            res.status(404).send({message: "No users have been found"})
+        } else {
+            res.status(200).send({users})
+        }
+    })
+}
+
+function getActiveUsers(req, res) {
+
+    const query = req.query
+
+    console.log(query)
+
+    User.find({active: query.active}).then(users => {
+        console.log(`users: ${users}`)
+        if (!users) {
+            res.status(404).send({message: "No users have been found"})
+        } else {
+            res.status(200).send({users})
+        }
+    })
+}
+
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    getUsers,
+    getActiveUsers
 }

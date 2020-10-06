@@ -4,9 +4,7 @@ const User = require("../models/user")
 
 function checkTokenExpiration(token) {
     const { exp } = jwt.decodedToken(token)
-
     const currentDate = moment.unix()
-
     return currentDate > exp ? true : false
 }
 
